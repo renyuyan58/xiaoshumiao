@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>互动学习 - 小树苗队</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .page-header {
+      padding: 140px 0 80px;
+      background: linear-gradient(180deg, #E8F5E9 0%, #FFF8E7 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header h1 {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #7BC47F, #FFB347);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-header p {
+      font-size: 1.1rem;
+      color: var(--color-text-light);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .page-header-decor {
+      position: absolute;
+      font-size: 4rem;
+      opacity: 0.3;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .decor-1 { top: 30%; left: 10%; }
+    .decor-2 { top: 20%; right: 15%; animation-delay: 0.5s; }
+    .decor-3 { bottom: 10%; left: 20%; animation-delay: 1s; }
+    .decor-4 { bottom: 20%; right: 10%; animation-delay: 1.5s; }
+
+    .game-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 16px 32px;
+      border-radius: var(--radius-full);
+      background: white;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tab-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--color-accent-green), #9DD4A0);
+      color: white;
+    }
+
+    .game-panel {
+      display: none;
+    }
+
+    .game-panel.active {
+      display: block;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .quiz-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .quiz-progress {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .quiz-progress-bar {
+      flex: 1;
+      height: 12px;
+      background: #E8E8E8;
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      margin: 0 16px;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--color-accent-green), var(--color-secondary));
+      border-radius: var(--radius-full);
+      transition: width 0.5s ease;
+    }
+
+    .quiz-stars {
+      display: flex;
+      gap: 4px;
+      font-size: 1.5rem;
+    }
+
+    .quiz-question {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      text-align: center;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .quiz-option {
+      padding: 20px;
+      border-radius: var(--radius-md);
+      background: #F8F9FA;
+      font-size: 1.1rem;
+      text-align: center;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 3px solid transparent;
+    }
+
+    .quiz-option:hover {
+      background: #E9ECEF;
+      transform: translateY(-2px);
+    }
+
+    .quiz-option.correct {
+      background: #D4EDDA;
+      border-color: var(--color-accent-green);
+      animation: pulse 0.5s ease;
+    }
+
+    .quiz-option.wrong {
+      background: #F8D7DA;
+      border-color: #F87171;
+      animation: shake 0.5s ease;
+    }
+
+    .quiz-option.disabled {
+      pointer-events: none;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .quiz-explanation {
+      background: #FFF3CD;
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 20px;
+      display: none;
+    }
+
+    .quiz-explanation.show {
+      display: block;
+      animation: slideDown 0.3s ease;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .quiz-explanation h4 {
+      margin-bottom: 8px;
+      color: #856404;
+    }
+
+    .quiz-next {
+      text-align: center;
+    }
+
+    .quiz-result {
+      text-align: center;
+      display: none;
+    }
+
+    .quiz-result.show {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .result-emoji {
+      font-size: 6rem;
+      margin-bottom: 20px;
+    }
+
+    .result-score {
+      font-family: var(--font-display);
+      font-size: 3rem;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent-green));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+
+    .result-text {
+      font-size: 1.2rem;
+      color: var(--color-text-light);
+      margin-bottom: 30px;
+    }
+
+    .memory-game {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .memory-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      background: white;
+      padding: 16px 24px;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .memory-info-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.1rem;
+    }
+
+    .memory-info-item span:first-child {
+      font-size: 1.5rem;
+    }
+
+    .memory-board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .memory-card {
+      aspect-ratio: 1;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .memory-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .memory-card.flipped .memory-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .memory-card.matched .memory-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .memory-card.matched {
+      animation: matchPop 0.5s ease;
+    }
+
+    @keyframes matchPop {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    .memory-card-front,
+    .memory-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .memory-card-front {
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent-purple));
+      color: white;
+    }
+
+    .memory-card-back {
+      background: white;
+      transform: rotateY(180deg);
+      box-shadow: var(--shadow-sm);
+      border: 3px solid var(--color-secondary);
+    }
+
+    .memory-win {
+      display: none;
+      background: white;
+      padding: 40px;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      margin-top: 20px;
+    }
+
+    .memory-win.show {
+      display: block;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .experiment-section {
+      margin-top: 60px;
+    }
+
+    .experiment-title {
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 2rem;
+      margin-bottom: 40px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .experiment-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 30px;
+    }
+
+    .experiment-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+    }
+
+    .experiment-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .experiment-cover {
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+      background: linear-gradient(135deg, #E8F4FD, #E8F5E9);
+    }
+
+    .experiment-content {
+      padding: 24px;
+    }
+
+    .experiment-content h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .experiment-content p {
+      color: var(--color-text-light);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .experiment-meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .page-header h1 {
+        font-size: 2.2rem;
+      }
+      
+      .quiz-options {
+        grid-template-columns: 1fr;
+      }
+      
+      .quiz-card {
+        padding: 24px;
+      }
+      
+      .quiz-question {
+        font-size: 1.2rem;
+      }
+      
+      .memory-board {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+      
+      .memory-card-front,
+      .memory-card-back {
+        font-size: 2rem;
+      }
+      
+      .experiment-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="page-header">
+    <span class="page-header-decor decor-1">🎮</span>
+    <span class="page-header-decor decor-2">🧩</span>
+    <span class="page-header-decor decor-3">🎯</span>
+    <span class="page-header-decor decor-4">⭐</span>
+    <div class="container">
+      <h1 class="fade-in">🎮 互动学习乐园</h1>
+      <p class="fade-in stagger-1">玩游戏也能学知识！快来挑战一下吧~</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="game-tabs fade-in">
+        <button class="tab-btn active" data-tab="quiz">
+          🧠 知识问答
+        </button>
+        <button class="tab-btn" data-tab="memory">
+          🃏 记忆翻牌
+        </button>
+      </div>
+
+      <div class="game-panel active" id="quizPanel">
+        <div class="quiz-container">
+          <div class="quiz-card fade-in stagger-1">
+            <div class="quiz-progress">
+              <span id="quizProgressText">1/10</span>
+              <div class="quiz-progress-bar">
+                <div class="quiz-progress-fill" id="quizProgressFill" style="width: 10%;"></div>
+              </div>
+              <div class="quiz-stars" id="quizStars">
+                <span>⭐</span>
+                <span style="opacity: 0.3;">⭐</span>
+                <span style="opacity: 0.3;">⭐</span>
+                <span style="opacity: 0.3;">⭐</span>
+                <span style="opacity: 0.3;">⭐</span>
+              </div>
+            </div>
+
+            <div id="quizContent">
+              <div class="quiz-question" id="quizQuestion"></div>
+              <div class="quiz-options" id="quizOptions"></div>
+              <div class="quiz-explanation" id="quizExplanation">
+                <h4>💡 知识点</h4>
+                <p id="explanationText"></p>
+              </div>
+              <div class="quiz-next" id="quizNext">
+                <button class="btn btn-primary" onclick="nextQuestion()" style="display: none;" id="nextBtn">
+                  下一题 →
+                </button>
+              </div>
+            </div>
+
+            <div class="quiz-result" id="quizResult">
+              <div class="result-emoji" id="resultEmoji">🎉</div>
+              <div class="result-score" id="resultScore">0/10</div>
+              <div class="result-text" id="resultText"></div>
+              <button class="btn btn-secondary" onclick="restartQuiz()">
+                🔄 再来一次
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-panel" id="memoryPanel">
+        <div class="memory-game fade-in">
+          <div class="memory-info">
+            <div class="memory-info-item">
+              <span>🎯</span>
+              <span>步数: <strong id="moveCount">0</strong></span>
+            </div>
+            <div class="memory-info-item">
+              <span>⏱️</span>
+              <span id="timer">00:00</span>
+            </div>
+            <div class="memory-info-item">
+              <span>✅</span>
+              <span>配对: <strong id="matchCount">0</strong>/8</span>
+            </div>
+          </div>
+          
+          <div class="memory-board" id="memoryBoard"></div>
+          
+          <button class="btn btn-green" onclick="restartMemory()">
+            🔄 重新开始
+          </button>
+          
+          <div class="memory-win" id="memoryWin">
+            <div class="result-emoji">🎊</div>
+            <h2 style="font-family: var(--font-display); margin-bottom: 10px;">太棒了！</h2>
+            <p style="color: var(--color-text-light); margin-bottom: 10px;">
+              你用了 <strong id="finalMoves">0</strong> 步，
+              耗时 <strong id="finalTime">00:00</strong>
+            </p>
+            <p style="margin-bottom: 20px;">记忆力真好，给你点赞！👍</p>
+            <button class="btn btn-secondary" onclick="restartMemory()">
+              🔄 再来一局
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="experiment-section">
+        <h2 class="experiment-title fade-in">🔬 在家也能做的小实验</h2>
+        <div class="experiment-grid">
+          <div class="experiment-card fade-in stagger-1">
+            <div class="experiment-cover">💧</div>
+            <div class="experiment-content">
+              <h3>神奇的水实验</h3>
+              <p>水有很多神奇的特性！在家用简单的材料，就能做好玩的科学实验，比如会爬墙的水、水面放硬币...</p>
+              <div class="experiment-meta">
+                <span class="tag tag-blue">难度：简单</span>
+                <span class="tag tag-green">材料：家里都有</span>
+                <span class="tag tag-orange">时长：30分钟</span>
+              </div>
+            </div>
+          </div>
+          <div class="experiment-card fade-in stagger-2">
+            <div class="experiment-cover">🎨</div>
+            <div class="experiment-content">
+              <h3>彩虹牛奶</h3>
+              <p>牛奶里滴入色素，再加点洗洁精，哇——颜色像彩虹一样散开了！这是怎么回事呢？</p>
+              <div class="experiment-meta">
+                <span class="tag tag-blue">难度：简单</span>
+                <span class="tag tag-pink">超有趣</span>
+                <span class="tag tag-orange">时长：15分钟</span>
+              </div>
+            </div>
+          </div>
+          <div class="experiment-card fade-in stagger-3">
+            <div class="experiment-cover">🌋</div>
+            <div class="experiment-content">
+              <h3>火山爆发</h3>
+              <p>用小苏打和白醋，就能做出模拟火山爆发的实验！看着"岩浆"冒出来，太神奇啦！</p>
+              <div class="experiment-meta">
+                <span class="tag tag-blue">难度：简单</span>
+                <span class="tag tag-purple">超酷</span>
+                <span class="tag tag-orange">时长：20分钟</span>
+              </div>
+            </div>
+          </div>
+          <div class="experiment-card fade-in stagger-4">
+            <div class="experiment-cover">🌱</div>
+            <div class="experiment-content">
+              <h3>种子发芽观察</h3>
+              <p>把一颗豆子放在湿润的棉花里，每天观察它的变化，看看种子是怎么发芽的！</p>
+              <div class="experiment-meta">
+                <span class="tag tag-green">难度：简单</span>
+                <span class="tag tag-blue">持续观察</span>
+                <span class="tag tag-orange">时长：7天</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/main.js"></script>
+  <script>
+    createNavbar('interactive');
+    createFooter();
+
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const gamePanels = document.querySelectorAll('.game-panel');
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        gamePanels.forEach(p => p.classList.remove('active'));
+        document.getElementById(tab + 'Panel').classList.add('active');
+      });
+    });
+
+    let currentQuestion = 0;
+    let score = 0;
+    let answered = false;
+    let shuffledQuiz = [];
+
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function initQuiz() {
+      shuffledQuiz = shuffleArray(quizData);
+      currentQuestion = 0;
+      score = 0;
+      answered = false;
+      document.getElementById('quizResult').classList.remove('show');
+      document.getElementById('quizContent').style.display = 'block';
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const q = shuffledQuiz[currentQuestion];
+      answered = false;
+      
+      document.getElementById('quizProgressText').textContent = `${currentQuestion + 1}/${shuffledQuiz.length}`;
+      document.getElementById('quizProgressFill').style.width = `${((currentQuestion + 1) / shuffledQuiz.length) * 100}%`;
+      document.getElementById('quizQuestion').textContent = q.question;
+      
+      const starsContainer = document.getElementById('quizStars');
+      starsContainer.innerHTML = '';
+      for (let i = 0; i < 5; i++) {
+        const star = document.createElement('span');
+        star.textContent = '⭐';
+        star.style.opacity = i < Math.floor(score / 2) ? '1' : '0.3';
+        starsContainer.appendChild(star);
+      }
+      
+      const optionsContainer = document.getElementById('quizOptions');
+      optionsContainer.innerHTML = '';
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = opt;
+        btn.addEventListener('click', () => selectOption(idx));
+        optionsContainer.appendChild(btn);
+      });
+      
+      document.getElementById('quizExplanation').classList.remove('show');
+      document.getElementById('nextBtn').style.display = 'none';
+    }
+
+    function selectOption(index) {
+      if (answered) return;
+      answered = true;
+      
+      const q = shuffledQuiz[currentQuestion];
+      const options = document.querySelectorAll('.quiz-option');
+      
+      options.forEach((opt, idx) => {
+        opt.classList.add('disabled');
+        if (idx === q.correct) {
+          opt.classList.add('correct');
+        }
+        if (idx === index && idx !== q.correct) {
+          opt.classList.add('wrong');
+        }
+      });
+      
+      if (index === q.correct) {
+        score++;
+        createConfetti(window.innerWidth / 2, window.innerHeight / 3);
+      }
+      
+      document.getElementById('explanationText').textContent = q.explanation;
+      document.getElementById('quizExplanation').classList.add('show');
+      document.getElementById('nextBtn').style.display = 'inline-flex';
+    }
+
+    function nextQuestion() {
+      currentQuestion++;
+      if (currentQuestion < shuffledQuiz.length) {
+        loadQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      document.getElementById('quizContent').style.display = 'none';
+      const resultEl = document.getElementById('quizResult');
+      resultEl.classList.add('show');
+      
+      document.getElementById('resultScore').textContent = `${score}/${shuffledQuiz.length}`;
+      
+      const resultEmoji = document.getElementById('resultEmoji');
+      const resultText = document.getElementById('resultText');
+      
+      const percentage = score / shuffledQuiz.length;
+      if (percentage >= 0.9) {
+        resultEmoji.textContent = '🏆';
+        resultText.textContent = '太厉害了！你是知识小达人！';
+      } else if (percentage >= 0.7) {
+        resultEmoji.textContent = '🌟';
+        resultText.textContent = '很不错哦！继续加油！';
+      } else if (percentage >= 0.5) {
+        resultEmoji.textContent = '😊';
+        resultText.textContent = '还可以，多学习会更棒的！';
+      } else {
+        resultEmoji.textContent = '💪';
+        resultText.textContent = '没关系，多学几次就会啦！';
+      }
+      
+      createConfetti(window.innerWidth / 2, window.innerHeight / 3);
+    }
+
+    function restartQuiz() {
+      initQuiz();
+    }
+
+    initQuiz();
+
+    let memoryCards = [];
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let moves = 0;
+    let timerInterval = null;
+    let seconds = 0;
+    let gameStarted = false;
+
+    function initMemory() {
+      const emojis = shuffleArray([...memoryGameEmojis, ...memoryGameEmojis]);
+      memoryCards = emojis.map((emoji, index) => ({
+        id: index,
+        emoji: emoji,
+        isFlipped: false,
+        isMatched: false
+      }));
+      flippedCards = [];
+      matchedPairs = 0;
+      moves = 0;
+      seconds = 0;
+      gameStarted = false;
+      
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      
+      document.getElementById('moveCount').textContent = '0';
+      document.getElementById('matchCount').textContent = '0';
+      document.getElementById('timer').textContent = '00:00';
+      document.getElementById('memoryWin').classList.remove('show');
+      
+      renderMemoryBoard();
+    }
+
+    function renderMemoryBoard() {
+      const board = document.getElementById('memoryBoard');
+      board.innerHTML = '';
+      
+      memoryCards.forEach((card, index) => {
+        const cardEl = document.createElement('div');
+        cardEl.className = `memory-card ${card.isFlipped ? 'flipped' : ''} ${card.isMatched ? 'matched' : ''}`;
+        cardEl.innerHTML = `
+          <div class="memory-card-inner">
+            <div class="memory-card-front">?</div>
+            <div class="memory-card-back">${card.emoji}</div>
+          </div>
+        `;
+        cardEl.addEventListener('click', () => flipCard(index));
+        board.appendChild(cardEl);
+      });
+    }
+
+    function flipCard(index) {
+      const card = memoryCards[index];
+      
+      if (card.isFlipped || card.isMatched || flippedCards.length >= 2) return;
+      
+      if (!gameStarted) {
+        gameStarted = true;
+        startTimer();
+      }
+      
+      card.isFlipped = true;
+      flippedCards.push(index);
+      renderMemoryBoard();
+      
+      if (flippedCards.length === 2) {
+        moves++;
+        document.getElementById('moveCount').textContent = moves;
+        
+        const [first, second] = flippedCards;
+        if (memoryCards[first].emoji === memoryCards[second].emoji) {
+          setTimeout(() => {
+            memoryCards[first].isMatched = true;
+            memoryCards[second].isMatched = true;
+            matchedPairs++;
+            document.getElementById('matchCount').textContent = matchedPairs;
+            flippedCards = [];
+            renderMemoryBoard();
+            
+            if (matchedPairs === memoryGameEmojis.length) {
+              memoryWin();
+            }
+          }, 500);
+        } else {
+          setTimeout(() => {
+            memoryCards[first].isFlipped = false;
+            memoryCards[second].isFlipped = false;
+            flippedCards = [];
+            renderMemoryBoard();
+          }, 1000);
+        }
+      }
+    }
+
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        seconds++;
+        const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+        const secs = (seconds % 60).toString().padStart(2, '0');
+        document.getElementById('timer').textContent = `${mins}:${secs}`;
+      }, 1000);
+    }
+
+    function memoryWin() {
+      clearInterval(timerInterval);
+      const mins = Math.floor(seconds / 60).toString().padStart(2, '0');
+      const secs = (seconds % 60).toString().padStart(2, '0');
+      
+      document.getElementById('finalMoves').textContent = moves;
+      document.getElementById('finalTime').textContent = `${mins}:${secs}`;
+      document.getElementById('memoryWin').classList.add('show');
+      
+      createConfetti(window.innerWidth / 2, window.innerHeight / 3);
+    }
+
+    function restartMemory() {
+      initMemory();
+    }
+
+    initMemory();
+
+    setTimeout(() => initScrollAnimations(), 100);
+  </script>
+</body>
+</html>

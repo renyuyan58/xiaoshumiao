@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>活动风采 - 小树苗队</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .page-header {
+      padding: 140px 0 80px;
+      background: linear-gradient(180deg, #FFF3E0 0%, #FFF8E7 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header h1 {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #FFB347, #FF9EC3);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-header p {
+      font-size: 1.1rem;
+      color: var(--color-text-light);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .page-header-decor {
+      position: absolute;
+      font-size: 4rem;
+      opacity: 0.3;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .decor-1 { top: 30%; left: 10%; }
+    .decor-2 { top: 20%; right: 15%; animation-delay: 0.5s; }
+    .decor-3 { bottom: 10%; left: 20%; animation-delay: 1s; }
+    .decor-4 { bottom: 20%; right: 10%; animation-delay: 1.5s; }
+
+    .gallery-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .gallery-tab {
+      padding: 12px 28px;
+      border-radius: var(--radius-full);
+      background: white;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+    }
+
+    .gallery-tab:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .gallery-tab.active {
+      background: linear-gradient(135deg, var(--color-secondary), #FF9EC3);
+      color: white;
+    }
+
+    .gallery-panel {
+      display: none;
+    }
+
+    .gallery-panel.active {
+      display: block;
+    }
+
+    .photo-wall {
+      column-count: 4;
+      column-gap: 20px;
+    }
+
+    .photo-item {
+      break-inside: avoid;
+      margin-bottom: 20px;
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 12px 12px 32px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .photo-item:hover {
+      transform: translateY(-5px) rotate(1deg);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .photo-item:nth-child(even):hover {
+      transform: translateY(-5px) rotate(-1deg);
+    }
+
+    .photo-inner {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+      position: relative;
+      background: #F5F5F5;
+    }
+
+    .photo-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-inner-emoji {
+      font-size: 4rem;
+    }
+
+    .photo-caption {
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      color: var(--color-text);
+    }
+
+    .photo-date {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--color-text-light);
+      margin-top: 4px;
+    }
+
+    .video-section {
+      margin-top: 60px;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+
+    .video-card {
+      background: white;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .video-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .video-thumb {
+      aspect-ratio: 16 / 9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .video-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-thumb-emoji {
+      font-size: 5rem;
+    }
+
+    .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70px;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .video-card:hover .play-btn {
+      transform: translate(-50%, -50%) scale(1.1);
+      background: var(--color-secondary);
+      color: white;
+    }
+
+    .video-info {
+      padding: 20px;
+    }
+
+    .video-info h3 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+    }
+
+    .video-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--color-text-light);
+      font-size: 0.9rem;
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--color-primary), var(--color-accent-green), var(--color-secondary));
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 40px;
+      width: 50%;
+      padding-right: 40px;
+    }
+
+    .timeline-item:nth-child(even) {
+      margin-left: 50%;
+      padding-right: 0;
+      padding-left: 40px;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      right: -13px;
+      top: 24px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: white;
+      border: 4px solid var(--color-secondary);
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .timeline-item:nth-child(even) .timeline-dot {
+      right: auto;
+      left: -13px;
+    }
+
+    .timeline-card {
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+    }
+
+    .timeline-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .timeline-date {
+      display: inline-block;
+      padding: 4px 12px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent-purple));
+      color: white;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      margin-bottom: 12px;
+    }
+
+    .timeline-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+    }
+
+    .timeline-desc {
+      color: var(--color-text-light);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .timeline-images {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .timeline-img {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: #F5F5F5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .timeline-img:hover {
+      transform: scale(1.1);
+    }
+
+    .timeline-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .lightbox {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 3000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .lightbox.active {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .lightbox-content {
+      background: white;
+      border-radius: var(--radius-lg);
+      max-width: 900px;
+      width: 100%;
+      max-height: 90vh;
+      overflow: hidden;
+      position: relative;
+      animation: modalIn 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      z-index: 10;
+    }
+
+    .lightbox-close:hover {
+      background: white;
+      transform: rotate(90deg);
+    }
+
+    .lightbox-media {
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      flex: 1;
+    }
+
+    .lightbox-media img {
+      max-width: 100%;
+      max-height: 60vh;
+      object-fit: contain;
+    }
+
+    .lightbox-media video {
+      max-width: 100%;
+      max-height: 60vh;
+    }
+
+    .lightbox-media-emoji {
+      font-size: 10rem;
+      padding: 40px;
+    }
+
+    .lightbox-info {
+      padding: 24px;
+      flex-shrink: 0;
+    }
+
+    .lightbox-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+
+    .lightbox-date {
+      color: var(--color-text-light);
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+    }
+
+    .lightbox-desc {
+      color: var(--color-text-light);
+      line-height: 1.7;
+    }
+
+    .upload-hint {
+      background: linear-gradient(135deg, #E8F4FD, #F3E5F5);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    .upload-hint h4 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: var(--color-primary);
+    }
+
+    .upload-hint p {
+      color: var(--color-text-light);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .upload-hint code {
+      background: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.9rem;
+      color: var(--color-primary);
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @media (max-width: 900px) {
+      .photo-wall {
+        column-count: 3;
+      }
+      
+      .video-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .page-header h1 {
+        font-size: 2.2rem;
+      }
+      
+      .photo-wall {
+        column-count: 2;
+      }
+      
+      .timeline::before {
+        left: 20px;
+      }
+      
+      .timeline-item,
+      .timeline-item:nth-child(even) {
+        width: 100%;
+        margin-left: 0;
+        padding-left: 60px;
+        padding-right: 0;
+      }
+      
+      .timeline-dot,
+      .timeline-item:nth-child(even) .timeline-dot {
+        left: 5px;
+        right: auto;
+      }
+
+      .section-subtitle {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 450px) {
+      .photo-wall {
+        column-count: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="page-header">
+    <span class="page-header-decor decor-1">📸</span>
+    <span class="page-header-decor decor-2">🎊</span>
+    <span class="page-header-decor decor-3">🌟</span>
+    <span class="page-header-decor decor-4">🎉</span>
+    <div class="container">
+      <h1 class="fade-in">📸 活动风采</h1>
+      <p class="fade-in stagger-1">记录我们在一起的美好时光，每一个瞬间都值得珍藏</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="gallery-tabs fade-in">
+        <button class="gallery-tab active" data-tab="photos">🖼️ 照片墙</button>
+        <button class="gallery-tab" data-tab="videos">🎬 视频专区</button>
+        <button class="gallery-tab" data-tab="timeline">📅 活动时间线</button>
+      </div>
+
+      <div class="gallery-panel active" id="photosPanel">
+        <div class="photo-wall" id="photoWall"></div>
+        
+        <div class="upload-hint fade-in">
+          <h4>💡 如何添加真实照片？</h4>
+          <p>
+            把你的照片放到 <code>assets/photos/</code> 文件夹里，<br>
+            然后在 <code>js/main.js</code> 的 <code>photoWallData</code> 数组中添加条目，<br>
+            把 <code>type</code> 改成 <code>"image"</code>，<code>src</code> 改成图片路径（如 <code>"assets/photos/photo1.jpg"</code>）就可以啦！
+          </p>
+        </div>
+      </div>
+
+      <div class="gallery-panel" id="videosPanel">
+        <div class="video-grid" id="videoGrid"></div>
+        
+        <div class="upload-hint fade-in">
+          <h4>💡 如何添加真实视频？</h4>
+          <p>
+            把你的视频放到 <code>assets/videos/</code> 文件夹里，<br>
+            然后在 <code>js/main.js</code> 的 <code>videoData</code> 数组中添加条目，<br>
+            把 <code>videoUrl</code> 改成视频路径（如 <code>"assets/videos/video1.mp4"</code>），<br>
+            也可以设置 <code>thumbnail</code> 为封面图片路径，就可以啦！
+          </p>
+        </div>
+      </div>
+
+      <div class="gallery-panel" id="timelinePanel">
+        <div class="timeline" id="timeline"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="lightbox" id="lightbox">
+    <div class="lightbox-content">
+      <button class="lightbox-close" id="lightboxClose">✕</button>
+      <div class="lightbox-media" id="lightboxMedia"></div>
+      <div class="lightbox-info">
+        <div class="lightbox-title" id="lightboxTitle"></div>
+        <div class="lightbox-date" id="lightboxDate"></div>
+        <div class="lightbox-desc" id="lightboxDesc"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    createNavbar('gallery');
+    createFooter();
+
+    const galleryTabs = document.querySelectorAll('.gallery-tab');
+    const galleryPanels = document.querySelectorAll('.gallery-panel');
+
+    galleryTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.tab;
+        galleryTabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        galleryPanels.forEach(p => p.classList.remove('active'));
+        document.getElementById(target + 'Panel').classList.add('active');
+      });
+    });
+
+    const photoWall = document.getElementById('photoWall');
+
+    photoWallData.forEach((photo, index) => {
+      const item = document.createElement('div');
+      item.className = `photo-item fade-in stagger-${(index % 6) + 1}`;
+      
+      let mediaHtml = '';
+      if (photo.type === 'image' && photo.src) {
+        mediaHtml = `<img src="${photo.src}" alt="${photo.title}" loading="lazy">`;
+      } else {
+        mediaHtml = `<div class="photo-inner-emoji" style="font-size: 4rem;">${photo.src}</div>`;
+      }
+      
+      const bgStyle = photo.color ? `background: ${photo.color};` : '';
+      
+      item.innerHTML = `
+        <div class="photo-inner" style="${bgStyle}">
+          ${mediaHtml}
+        </div>
+        <div class="photo-caption">${photo.title}</div>
+        <div class="photo-date">${photo.date}</div>
+      `;
+      item.addEventListener('click', () => openLightbox({
+        type: photo.type,
+        src: photo.src,
+        title: photo.title,
+        date: photo.date,
+        desc: photo.desc,
+        color: photo.color
+      }));
+      photoWall.appendChild(item);
+    });
+
+    const videoGrid = document.getElementById('videoGrid');
+
+    videoData.forEach((video, index) => {
+      const card = document.createElement('div');
+      card.className = `video-card fade-in stagger-${(index % 4) + 1}`;
+      
+      let thumbHtml = '';
+      if (video.thumbnailType === 'image' && video.thumbnail) {
+        thumbHtml = `<img src="${video.thumbnail}" alt="${video.title}">`;
+      } else {
+        thumbHtml = `<div class="video-thumb-emoji">${video.thumbnail || '🎬'}</div>`;
+      }
+      
+      const bgStyle = video.thumbColor ? `background: ${video.thumbColor};` : '';
+      
+      card.innerHTML = `
+        <div class="video-thumb" style="${bgStyle}">
+          ${thumbHtml}
+          <div class="play-btn">▶</div>
+        </div>
+        <div class="video-info">
+          <h3>${video.title}</h3>
+          <div class="video-meta">
+            <span>📅 ${video.date}</span>
+            <span>${video.description ? '🎞️ 精彩视频' : '⏳ 即将上线'}</span>
+          </div>
+        </div>
+      `;
+      card.addEventListener('click', () => openVideoLightbox(video));
+      videoGrid.appendChild(card);
+    });
+
+    const timeline = document.getElementById('timeline');
+    const photoColors = [
+      '#E8F4FD', '#FFF3E0', '#E8F5E9', '#FCE4EC',
+      '#F3E5F5', '#FFF8E1', '#E0F7FA', '#FBE9E7'
+    ];
+
+    activityData.forEach((activity, index) => {
+      const firstImg = activity.images[0] || {};
+      const firstImgContent = firstImg.type === 'image' 
+        ? `<img src="${firstImg.src}" alt="${firstImg.alt || ''}">`
+        : (firstImg.src || '📷');
+      
+      const item = document.createElement('div');
+      item.className = `timeline-item fade-in stagger-${(index % 4) + 1}`;
+      item.innerHTML = `
+        <div class="timeline-dot">${firstImg.type === 'image' ? '🖼️' : (firstImg.src || '📌')}</div>
+        <div class="timeline-card">
+          <span class="timeline-date">${activity.date}</span>
+          <h3 class="timeline-title">${activity.title}</h3>
+          <p class="timeline-desc">${activity.description}</p>
+          <div class="timeline-images">
+            ${activity.images.map((img, idx) => {
+              const bgColor = photoColors[(index + idx) % photoColors.length];
+              const content = img.type === 'image' 
+                ? `<img src="${img.src}" alt="${img.alt || ''}">`
+                : (img.src || '🖼️');
+              return `<div class="timeline-img" style="background: ${bgColor};" data-idx="${idx}" data-activity="${activity.id}">${content}</div>`;
+            }).join('')}
+          </div>
+        </div>
+      `;
+      
+      item.querySelectorAll('.timeline-img').forEach((imgEl, idx) => {
+        imgEl.addEventListener('click', () => {
+          const img = activity.images[idx];
+          openLightbox({
+            type: img.type,
+            src: img.src,
+            title: activity.title,
+            date: activity.date,
+            desc: activity.description,
+            color: photoColors[(index + idx) % photoColors.length]
+          });
+        });
+      });
+      
+      timeline.appendChild(item);
+    });
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const lightboxMedia = document.getElementById('lightboxMedia');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    const lightboxDate = document.getElementById('lightboxDate');
+    const lightboxDesc = document.getElementById('lightboxDesc');
+
+    function openLightbox(media) {
+      let mediaHtml = '';
+      if (media.type === 'image' && media.src) {
+        mediaHtml = `<img src="${media.src}" alt="${media.title || ''}">`;
+      } else {
+        const bgStyle = media.color ? `background: ${media.color};` : 'background: #F5F5F5;';
+        mediaHtml = `<div class="lightbox-media-emoji" style="${bgStyle} width: 100%; display: flex; align-items: center; justify-content: center;">${media.src}</div>`;
+      }
+      lightboxMedia.innerHTML = mediaHtml;
+      lightboxTitle.textContent = media.title || '';
+      lightboxDate.textContent = media.date || '';
+      lightboxDesc.textContent = media.desc || '';
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function openVideoLightbox(video) {
+      let mediaHtml = '';
+      if (video.videoUrl) {
+        mediaHtml = `<video src="${video.videoUrl}" controls autoplay></video>`;
+      } else {
+        const bgStyle = video.thumbColor ? `background: ${video.thumbColor};` : 'background: #F5F5F5;';
+        mediaHtml = `
+          <div style="${bgStyle} width: 100%; padding: 60px; text-align: center;">
+            <div style="font-size: 6rem; margin-bottom: 20px;">${video.thumbnail || '🎬'}</div>
+            <p style="color: #666; font-size: 1.1rem;">视频即将上线，敬请期待~</p>
+          </div>
+        `;
+      }
+      lightboxMedia.innerHTML = mediaHtml;
+      lightboxTitle.textContent = video.title || '';
+      lightboxDate.textContent = video.date || '';
+      lightboxDesc.textContent = video.description || '';
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    lightboxClose.addEventListener('click', closeLightbox);
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    function closeLightbox() {
+      const video = lightboxMedia.querySelector('video');
+      if (video) {
+        video.pause();
+      }
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+        closeLightbox();
+      }
+    });
+
+    setTimeout(() => initScrollAnimations(), 100);
+  </script>
+</body>
+</html>

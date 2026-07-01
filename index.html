@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小树苗队 - 暑期三下乡教学组</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      background: linear-gradient(180deg, #E8F4FD 0%, #FFF8E7 100%);
+      overflow: hidden;
+      padding-top: 80px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-text h1 {
+      font-size: 3.5rem;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #4A90D9, #FFB347, #7BC47F);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.2;
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      color: var(--color-text-light);
+      margin-bottom: 32px;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-illustration {
+      position: relative;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-emoji-main {
+      font-size: 12rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    .hero-emoji-small {
+      position: absolute;
+      font-size: 3rem;
+      animation: float 2.5s ease-in-out infinite;
+    }
+
+    .hero-emoji-small:nth-child(2) { top: 10%; left: 10%; animation-delay: 0.2s; }
+    .hero-emoji-small:nth-child(3) { top: 20%; right: 15%; animation-delay: 0.5s; }
+    .hero-emoji-small:nth-child(4) { bottom: 20%; left: 5%; animation-delay: 0.8s; }
+    .hero-emoji-small:nth-child(5) { bottom: 10%; right: 10%; animation-delay: 1.1s; }
+    .hero-emoji-small:nth-child(6) { top: 50%; left: 0%; animation-delay: 1.4s; }
+    .hero-emoji-small:nth-child(7) { top: 40%; right: 0%; animation-delay: 1.7s; }
+
+    .cloud {
+      position: absolute;
+      background: white;
+      border-radius: 100px;
+      opacity: 0.8;
+      animation: cloudFloat 20s linear infinite;
+    }
+
+    .cloud::before,
+    .cloud::after {
+      content: '';
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+    }
+
+    .cloud1 {
+      width: 100px;
+      height: 40px;
+      top: 15%;
+      left: 10%;
+    }
+    .cloud1::before { width: 50px; height: 50px; top: -25px; left: 15px; }
+    .cloud1::after { width: 35px; height: 35px; top: -18px; right: 15px; }
+
+    .cloud2 {
+      width: 120px;
+      height: 45px;
+      top: 25%;
+      right: 15%;
+      animation-delay: -5s;
+      animation-duration: 25s;
+    }
+    .cloud2::before { width: 60px; height: 60px; top: -30px; left: 20px; }
+    .cloud2::after { width: 40px; height: 40px; top: -20px; right: 20px; }
+
+    .cloud3 {
+      width: 80px;
+      height: 35px;
+      bottom: 30%;
+      left: 20%;
+      animation-delay: -10s;
+      animation-duration: 18s;
+    }
+    .cloud3::before { width: 40px; height: 40px; top: -20px; left: 10px; }
+    .cloud3::after { width: 30px; height: 30px; top: -15px; right: 10px; }
+
+    @keyframes cloudFloat {
+      0% { transform: translateX(-20px); }
+      50% { transform: translateX(20px); }
+      100% { transform: translateX(-20px); }
+    }
+
+    .features {
+      background: var(--color-bg-white);
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      padding: 32px 24px;
+      text-align: center;
+      border-radius: var(--radius-md);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px) rotate(-2deg);
+    }
+
+    .feature-icon {
+      font-size: 4rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .feature-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      color: var(--color-text);
+    }
+
+    .feature-card p {
+      color: var(--color-text-light);
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .feature-blue { background: linear-gradient(135deg, #E8F4FD, #D1E8F7); }
+    .feature-orange { background: linear-gradient(135deg, #FFF3E0, #FFE0B2); }
+    .feature-green { background: linear-gradient(135deg, #E8F5E9, #C8E6C9); }
+    .feature-pink { background: linear-gradient(135deg, #FCE4EC, #F8BBD9); }
+
+    .team {
+      background: linear-gradient(180deg, #FFF8E7 0%, #F0F7FF 100%);
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    .team-card {
+      padding: 30px;
+      text-align: center;
+    }
+
+    .team-avatar {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      background: linear-gradient(135deg, #FFE066, #FFB347);
+      box-shadow: 0 8px 24px rgba(255, 179, 71, 0.3);
+      position: relative;
+    }
+
+    .team-avatar::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 3px dashed #FFB347;
+      animation: rotate 10s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .team-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 4px;
+    }
+
+    .team-role {
+      color: var(--color-primary);
+      font-weight: 500;
+      margin-bottom: 12px;
+      font-size: 0.9rem;
+    }
+
+    .team-bio {
+      color: var(--color-text-light);
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+    }
+
+    .team-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .quick-access {
+      background: var(--color-bg-white);
+    }
+
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .quick-card {
+      padding: 40px 24px;
+      text-align: center;
+      border-radius: var(--radius-lg);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quick-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.9);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .quick-card:hover::before {
+      opacity: 1;
+    }
+
+    .quick-card:hover .quick-icon {
+      transform: scale(1.2) rotate(10deg);
+    }
+
+    .quick-icon {
+      font-size: 5rem;
+      margin-bottom: 16px;
+      display: block;
+      transition: transform 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quick-card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quick-card p {
+      color: var(--color-text-light);
+      position: relative;
+      z-index: 1;
+    }
+
+    .quick-blue { background: linear-gradient(135deg, #E3F2FD, #BBDEFB); }
+    .quick-green { background: linear-gradient(135deg, #E8F5E9, #C8E6C9); }
+    .quick-orange { background: linear-gradient(135deg, #FFF3E0, #FFE0B2); }
+    .quick-purple { background: linear-gradient(135deg, #F3E5F5, #E1BEE7); }
+
+    .stats {
+      background: linear-gradient(135deg, #4A90D9, #7BC47F);
+      color: white;
+      padding: 60px 0;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      margin-bottom: 8px;
+    }
+
+    .stat-label {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    @media (max-width: 900px) {
+      .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+      }
+      
+      .hero-text h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero-illustration {
+        height: 350px;
+      }
+      
+      .hero-emoji-main {
+        font-size: 8rem;
+      }
+      
+      .hero-buttons {
+        justify-content: center;
+      }
+      
+      .features-grid,
+      .team-grid,
+      .quick-grid,
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 500px) {
+      .features-grid,
+      .team-grid,
+      .quick-grid,
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .hero-text h1 {
+        font-size: 2rem;
+      }
+      
+      .stat-number {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="hero">
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <div class="cloud cloud3"></div>
+    
+    <div class="hero-content">
+      <div class="hero-text fade-in">
+        <h1>暑期三下乡<br>小树苗队</h1>
+        <p>
+          用知识点亮梦想，用爱心温暖童年。<br>
+          我们是一支充满活力的大学生支教团队，
+          为乡村小朋友带来有趣、有温度的课堂体验。
+        </p>
+        <div class="hero-buttons">
+          <a href="courses.html" class="btn btn-primary">
+            📚 开始学习
+          </a>
+          <a href="interactive.html" class="btn btn-secondary">
+            🎮 玩游戏学知识
+          </a>
+        </div>
+      </div>
+      
+      <div class="hero-illustration fade-in stagger-2">
+        <span class="hero-emoji-small">☀️</span>
+        <span class="hero-emoji-small">🌈</span>
+        <span class="hero-emoji-small">📖</span>
+        <span class="hero-emoji-small">🎨</span>
+        <span class="hero-emoji-small">🔬</span>
+        <span class="hero-emoji-small">⭐</span>
+        <div class="hero-emoji-main">🏫</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section features">
+    <div class="container">
+      <h2 class="section-title fade-in">✨ 我们的特色</h2>
+      <p class="section-subtitle fade-in">丰富多彩的课程，让学习变得有趣又好玩</p>
+      
+      <div class="features-grid">
+        <div class="feature-card feature-blue fade-in stagger-1">
+          <span class="feature-icon">🔬</span>
+          <h3>科学探索</h3>
+          <p>有趣的小实验，激发对科学的好奇心，培养动手能力</p>
+        </div>
+        <div class="feature-card feature-orange fade-in stagger-2">
+          <span class="feature-icon">🎨</span>
+          <h3>艺术创意</h3>
+          <p>绘画、手工、音乐...释放想象力，发现美创造美</p>
+        </div>
+        <div class="feature-card feature-green fade-in stagger-3">
+          <span class="feature-icon">📖</span>
+          <h3>学业辅导</h3>
+          <p>趣味学习方法，让语文数学变得简单又好玩</p>
+        </div>
+        <div class="feature-card feature-pink fade-in stagger-4">
+          <span class="feature-icon">💪</span>
+          <h3>素质拓展</h3>
+          <p>团队游戏、安全教育，全面健康快乐成长</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="fade-in stagger-1">
+          <div class="stat-number">8+</div>
+          <div class="stat-label">精彩课程</div>
+        </div>
+        <div class="fade-in stagger-2">
+          <div class="stat-number">6</div>
+          <div class="stat-label">优秀教师</div>
+        </div>
+        <div class="fade-in stagger-3">
+          <div class="stat-number">100+</div>
+          <div class="stat-label">快乐学生</div>
+        </div>
+        <div class="fade-in stagger-4">
+          <div class="stat-number">15</div>
+          <div class="stat-label">活动天数</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section team">
+    <div class="container">
+      <h2 class="section-title fade-in">👨‍🏫 教学团队</h2>
+      <p class="section-subtitle fade-in">认识我们可爱又专业的老师们</p>
+      
+      <div class="team-grid" id="teamGrid"></div>
+    </div>
+  </section>
+
+  <section class="section quick-access">
+    <div class="container">
+      <h2 class="section-title fade-in">🚀 快速入口</h2>
+      <p class="section-subtitle fade-in">想去哪里？点击一下就到啦</p>
+      
+      <div class="quick-grid">
+        <a href="courses.html" class="quick-card quick-blue fade-in stagger-1">
+          <span class="quick-icon">📚</span>
+          <h3>教学资源</h3>
+          <p>丰富的课程等你学习</p>
+        </a>
+        <a href="interactive.html" class="quick-card quick-green fade-in stagger-2">
+          <span class="quick-icon">🎮</span>
+          <h3>互动学习</h3>
+          <p>玩游戏也能学知识</p>
+        </a>
+        <a href="gallery.html" class="quick-card quick-orange fade-in stagger-3">
+          <span class="quick-icon">📸</span>
+          <h3>活动风采</h3>
+          <p>看看我们的精彩瞬间</p>
+        </a>
+        <a href="#teamGrid" class="quick-card quick-purple fade-in stagger-4">
+          <span class="quick-icon">👋</span>
+          <h3>认识老师</h3>
+          <p>和老师们打个招呼</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script src="js/main.js"></script>
+  <script>
+    createNavbar('home');
+    createFooter();
+
+    const teamGrid = document.getElementById('teamGrid');
+    teamData.forEach((member, index) => {
+      const card = document.createElement('div');
+      card.className = `card team-card fade-in stagger-${(index % 4) + 1}`;
+      card.innerHTML = `
+        <div class="team-avatar">${member.avatar}</div>
+        <h3>${member.name}</h3>
+        <div class="team-role">${member.role}</div>
+        <p class="team-bio">${member.bio}</p>
+        <div class="team-skills">
+          ${member.skills.map(skill => `<span class="tag tag-blue">${skill}</span>`).join('')}
+        </div>
+      `;
+      teamGrid.appendChild(card);
+    });
+
+    setTimeout(() => initScrollAnimations(), 100);
+  </script>
+</body>
+</html>

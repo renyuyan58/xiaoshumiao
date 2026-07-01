@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>教学资源 - 小树苗队</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .page-header {
+      padding: 140px 0 80px;
+      background: linear-gradient(180deg, #E8F4FD 0%, #FFF8E7 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header h1 {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #4A90D9, #7BC47F);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .page-header p {
+      font-size: 1.1rem;
+      color: var(--color-text-light);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .page-header-decor {
+      position: absolute;
+      font-size: 4rem;
+      opacity: 0.3;
+    }
+
+    .decor-1 { top: 30%; left: 10%; animation: float 3s ease-in-out infinite; }
+    .decor-2 { top: 20%; right: 15%; animation: float 2.5s ease-in-out infinite 0.5s; }
+    .decor-3 { bottom: 10%; left: 20%; animation: float 3.5s ease-in-out infinite 1s; }
+    .decor-4 { bottom: 20%; right: 10%; animation: float 2.8s ease-in-out infinite 1.5s; }
+
+    .category-filter {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 48px;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 12px 24px;
+      border-radius: var(--radius-full);
+      background: white;
+      font-family: var(--font-display);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      box-shadow: var(--shadow-sm);
+      border: 2px solid transparent;
+    }
+
+    .filter-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .filter-btn.active {
+      background: linear-gradient(135deg, var(--color-primary), #6BA3E0);
+      color: white;
+      border-color: transparent;
+    }
+
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+
+    .course-card {
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .course-cover {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+      position: relative;
+    }
+
+    .course-cover::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      opacity: 0.3;
+    }
+
+    .course-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 500;
+      z-index: 1;
+    }
+
+    .course-info {
+      padding: 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .course-category {
+      font-size: 0.85rem;
+      margin-bottom: 8px;
+      display: inline-block;
+    }
+
+    .course-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: var(--color-text);
+    }
+
+    .course-desc {
+      color: var(--color-text-light);
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+      flex: 1;
+      line-height: 1.6;
+    }
+
+    .course-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .course-grade, .course-duration {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+    }
+
+    .difficulty-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #E0E0E0;
+    }
+
+    .dot.active {
+      background: var(--color-secondary);
+    }
+
+    .course-detail-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .course-detail-modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: var(--radius-lg);
+      max-width: 800px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      animation: modalIn 0.3s ease;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      font-size: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      transition: all 0.3s;
+    }
+
+    .modal-close:hover {
+      background: white;
+      transform: rotate(90deg);
+    }
+
+    .modal-header {
+      padding: 60px 40px 40px;
+      text-align: center;
+      position: relative;
+    }
+
+    .modal-header-emoji {
+      font-size: 8rem;
+      margin-bottom: 16px;
+    }
+
+    .modal-header h2 {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .modal-header-tags {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .modal-body {
+      padding: 0 40px 40px;
+    }
+
+    .modal-section {
+      margin-bottom: 32px;
+    }
+
+    .modal-section h3 {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-section h3::before {
+      content: '';
+      width: 6px;
+      height: 24px;
+      border-radius: 3px;
+      background: linear-gradient(180deg, var(--color-primary), var(--color-accent-green));
+    }
+
+    .objectives-list {
+      list-style: none;
+    }
+
+    .objectives-list li {
+      padding: 10px 0;
+      padding-left: 28px;
+      position: relative;
+      color: var(--color-text-light);
+    }
+
+    .objectives-list li::before {
+      content: '✅';
+      position: absolute;
+      left: 0;
+      top: 8px;
+    }
+
+    .materials-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .material-item {
+      padding: 8px 16px;
+      background: #F5F5F5;
+      border-radius: var(--radius-full);
+      font-size: 0.9rem;
+    }
+
+    .course-content {
+      line-height: 1.8;
+      color: var(--color-text-light);
+    }
+
+    .course-content h3 {
+      color: var(--color-text);
+      margin-top: 20px;
+      margin-bottom: 10px;
+      font-size: 1.1rem;
+    }
+
+    .course-content p {
+      margin-bottom: 12px;
+    }
+
+    .downloads-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .download-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: #F8F9FA;
+      border-radius: var(--radius-md);
+      transition: all 0.3s;
+    }
+
+    .download-item:hover {
+      background: #E9ECEF;
+    }
+
+    .download-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .download-icon {
+      font-size: 2rem;
+    }
+
+    .download-name {
+      font-weight: 500;
+    }
+
+    .download-btn {
+      padding: 8px 20px;
+      border-radius: var(--radius-full);
+      background: var(--color-primary);
+      color: white;
+      font-size: 0.9rem;
+      transition: all 0.3s;
+    }
+
+    .download-btn:hover {
+      transform: scale(1.05);
+    }
+
+    @media (max-width: 900px) {
+      .courses-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .page-header h1 {
+        font-size: 2.2rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .courses-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .modal-header,
+      .modal-body {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+      
+      .modal-header-emoji {
+        font-size: 5rem;
+      }
+      
+      .modal-header h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <section class="page-header">
+    <span class="page-header-decor decor-1">📚</span>
+    <span class="page-header-decor decor-2">🎨</span>
+    <span class="page-header-decor decor-3">🔬</span>
+    <span class="page-header-decor decor-4">📖</span>
+    <div class="container">
+      <h1 class="fade-in">📚 教学资源库</h1>
+      <p class="fade-in stagger-1">丰富有趣的课程等你来探索，选择你喜欢的开始学习吧！</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="category-filter fade-in">
+        <button class="filter-btn active" data-category="all">🌟 全部课程</button>
+        <button class="filter-btn" data-category="science">🔬 科学科普</button>
+        <button class="filter-btn" data-category="culture">🎨 文化艺术</button>
+        <button class="filter-btn" data-category="academic">📖 学业辅导</button>
+        <button class="filter-btn" data-category="quality">💪 综合素质</button>
+      </div>
+
+      <div class="courses-grid" id="coursesGrid"></div>
+    </div>
+  </section>
+
+  <div class="course-detail-modal" id="courseModal">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-header" id="modalHeader">
+      </div>
+      <div class="modal-body" id="modalBody">
+      </div>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    createNavbar('courses');
+    createFooter();
+
+    const coursesGrid = document.getElementById('coursesGrid');
+    const courseModal = document.getElementById('courseModal');
+    const modalClose = document.getElementById('modalClose');
+    const modalHeader = document.getElementById('modalHeader');
+    const modalBody = document.getElementById('modalBody');
+
+    function renderCourses(category = 'all') {
+      coursesGrid.innerHTML = '';
+      const filtered = category === 'all' 
+        ? courseData 
+        : courseData.filter(c => c.category === category);
+      
+      filtered.forEach((course, index) => {
+        const card = document.createElement('div');
+        card.className = `card course-card fade-in stagger-${(index % 4) + 1}`;
+        card.style.background = 'white';
+        
+        const difficultyDots = [1, 2, 3].map(d => 
+          `<span class="dot ${course.difficulty === 'easy' && d === 1 || course.difficulty === 'medium' && d <= 2 || course.difficulty === 'hard' ? 'active' : ''}"></span>`
+        ).join('');
+        
+        card.innerHTML = `
+          <div class="course-cover" style="background: ${course.color}20;">
+            <span class="course-badge">${course.categoryName}</span>
+            <span style="position: relative; z-index: 1;">${course.emoji}</span>
+          </div>
+          <div class="course-info">
+            <h3 class="course-title">${course.title}</h3>
+            <p class="course-desc">${course.description}</p>
+            <div class="course-meta">
+              <div class="course-grade">🎯 ${course.grade}</div>
+              <div class="course-duration">⏱️ ${course.duration}</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px;">
+              <div class="difficulty-dots">${difficultyDots}</div>
+              <span style="font-size: 0.8rem; color: var(--color-text-light);">难度：${course.difficultyText}</span>
+            </div>
+          </div>
+        `;
+        
+        card.addEventListener('click', () => openCourseDetail(course));
+        coursesGrid.appendChild(card);
+      });
+      
+      setTimeout(() => initScrollAnimations(), 50);
+    }
+
+    function openCourseDetail(course) {
+      modalHeader.style.background = `linear-gradient(135deg, ${course.color}30, ${course.color}10)`;
+      modalHeader.innerHTML = `
+        <div class="modal-header-emoji">${course.emoji}</div>
+        <h2>${course.title}</h2>
+        <div class="modal-header-tags">
+          <span class="tag tag-blue">${course.categoryName}</span>
+          <span class="tag tag-orange">🎯 ${course.grade}</span>
+          <span class="tag tag-green">⏱️ ${course.duration}</span>
+          ${course.tags.map(t => `<span class="tag tag-purple">${t}</span>`).join('')}
+        </div>
+      `;
+      
+      modalBody.innerHTML = `
+        <div class="modal-section">
+          <h3>🎯 学习目标</h3>
+          <ul class="objectives-list">
+            ${course.objectives.map(obj => `<li>${obj}</li>`).join('')}
+          </ul>
+        </div>
+        
+        <div class="modal-section">
+          <h3>📦 准备材料</h3>
+          <div class="materials-list">
+            ${course.materials.map(m => `<span class="material-item">${m}</span>`).join('')}
+          </div>
+        </div>
+        
+        <div class="modal-section">
+          <h3>📖 课程内容</h3>
+          <div class="course-content">${course.content}</div>
+        </div>
+        
+        <div class="modal-section">
+          <h3>📥 资料下载</h3>
+          <div class="downloads-list">
+            ${course.downloads.map(d => `
+              <div class="download-item">
+                <div class="download-info">
+                  <span class="download-icon">📄</span>
+                  <span class="download-name">${d.name}</span>
+                </div>
+                <button class="download-btn" onclick="alert('下载功能即将上线，敬请期待！')">下载</button>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+      
+      courseModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    modalClose.addEventListener('click', () => {
+      courseModal.classList.remove('active');
+      document.body.style.overflow = '';
+    });
+
+    courseModal.addEventListener('click', (e) => {
+      if (e.target === courseModal) {
+        courseModal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+    });
+
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderCourses(btn.dataset.category);
+      });
+    });
+
+    const urlCategory = getUrlParam('category');
+    if (urlCategory) {
+      const targetBtn = document.querySelector(`.filter-btn[data-category="${urlCategory}"]`);
+      if (targetBtn) {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        targetBtn.classList.add('active');
+      }
+      renderCourses(urlCategory);
+    } else {
+      renderCourses();
+    }
+
+    setTimeout(() => initScrollAnimations(), 100);
+  </script>
+</body>
+</html>
