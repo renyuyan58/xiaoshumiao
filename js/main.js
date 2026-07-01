@@ -424,7 +424,7 @@ const courseData = [
 const teamData = [
   { name: '邓同学', avatar: '🧑', bgColor: 'linear-gradient(135deg, #FFE066, #FFB347)' },
   { name: '郭同学', avatar: '👩', bgColor: 'linear-gradient(135deg, #FF9EC3, #FF6BA8)' },
-  { name: '唐同学', avatar: '🧑', bgColor: 'linear-gradient(135deg, #7BC47F, #4CAF50)' },
+  { name: '唐同学', avatar: '👩', bgColor: 'linear-gradient(135deg, #7BC47F, #4CAF50)' },
   { name: '钟同学', avatar: '👩', bgColor: 'linear-gradient(135deg, #B19CD9, #9C27B0)' },
   { name: '任同学', avatar: '👩', bgColor: 'linear-gradient(135deg, #4A90D9, #2196F3)' },
   { name: '刘同学', avatar: '🧑', bgColor: 'linear-gradient(135deg, #80DEEA, #00BCD4)' }
