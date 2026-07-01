@@ -10,8 +10,8 @@ function createNavbar(activePage) {
       <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
       <ul class="nav-links" id="navLinks">
         <li><a href="index.html" class="${activePage === 'home' ? 'active' : ''}">🏠 首页</a></li>
-        <li><a href="courses.html" class="${activePage === 'courses' ? 'active' : ''}">📚 教学资源</a></li>
-        <li><a href="interactive.html" class="${activePage === 'interactive' ? 'active' : ''}">🎮 互动学习</a></li>
+        <li><a href="courses.html" class="${activePage === 'courses' ? 'active' : ''}">📚 活动内容</a></li>
+        <li><a href="interactive.html" class="${activePage === 'interactive' ? 'active' : ''}">🎮 互动乐园</a></li>
         <li><a href="gallery.html" class="${activePage === 'gallery' ? 'active' : ''}">📸 活动风采</a></li>
       </ul>
     </div>
@@ -40,22 +40,22 @@ function createFooter() {
     <div class="container">
       <div class="footer-content">
         <div>
-          <div class="footer-logo">🌟 小树苗队团</div>
+          <div class="footer-logo">🌟 小树苗队</div>
           <p class="footer-desc">
-            我们是一支充满爱心的大学生支教团队，
-            致力于为乡村小朋友带来有趣、有温度的课堂体验。
-            用知识点亮梦想，用爱心温暖童年。
+            我们是一支充满活力的大学生团队，
+            致力于为乡村小朋友带来有趣、有温度的活动体验。
+            用陪伴点亮童年，用爱心温暖成长。
           </p>
         </div>
         <div>
           <h4>快速导航</h4>
           <a href="index.html">首页</a>
-          <a href="courses.html">教学资源</a>
-          <a href="interactive.html">互动学习</a>
+          <a href="courses.html">活动内容</a>
+          <a href="interactive.html">互动乐园</a>
           <a href="gallery.html">活动风采</a>
         </div>
         <div>
-          <h4>课程分类</h4>
+          <h4>活动分类</h4>
           <a href="courses.html?category=science">🔬 科学科普</a>
           <a href="courses.html?category=culture">🎨 文化艺术</a>
           <a href="courses.html?category=academic">📖 学业辅导</a>
@@ -69,7 +69,7 @@ function createFooter() {
         </div>
       </div>
       <div class="footer-bottom">
-        © 2026 暑期三下乡教学组 · 用爱传递知识，用心点亮梦想 ❤️
+        © 2026 暑期三下乡 · 小树苗队 · 用爱传递温暖，用心点亮成长 ❤️
       </div>
     </div>
   `;
@@ -422,12 +422,12 @@ const courseData = [
 ];
 
 const teamData = [
-  { name: '小明老师', role: '队长', avatar: '👨‍🏫', bio: '负责整体教学规划，科学课主讲', skills: ['科学', '数学', '编程'] },
-  { name: '小红老师', role: '副队长', avatar: '👩‍🏫', bio: '语文和艺术课主讲，温柔有耐心', skills: ['语文', '绘画', '音乐'] },
-  { name: '小刚老师', role: '教学组成员', avatar: '🧑‍🏫', bio: '数学和体育课主讲，活力满满', skills: ['数学', '体育', '游戏'] },
-  { name: '小美老师', role: '教学组成员', avatar: '👩‍🎨', bio: '美术和手工课主讲，创意无限', skills: ['美术', '手工', '书法'] },
-  { name: '小强老师', role: '教学组成员', avatar: '🧑‍🔬', bio: '科学实验课主讲，动手能力强', skills: ['科学实验', '机器人', '科技'] },
-  { name: '小丽老师', role: '教学组成员', avatar: '👩‍💻', bio: '英语和电脑课主讲，活泼开朗', skills: ['英语', '计算机', '演讲'] }
+  { name: '邓同学', avatar: '🧑', bgColor: 'linear-gradient(135deg, #FFE066, #FFB347)' },
+  { name: '郭同学', avatar: '👩', bgColor: 'linear-gradient(135deg, #FF9EC3, #FF6BA8)' },
+  { name: '唐同学', avatar: '🧑', bgColor: 'linear-gradient(135deg, #7BC47F, #4CAF50)' },
+  { name: '钟同学', avatar: '👩', bgColor: 'linear-gradient(135deg, #B19CD9, #9C27B0)' },
+  { name: '任同学', avatar: '👩', bgColor: 'linear-gradient(135deg, #4A90D9, #2196F3)' },
+  { name: '刘同学', avatar: '🧑', bgColor: 'linear-gradient(135deg, #80DEEA, #00BCD4)' }
 ];
 
 const quizData = [
@@ -518,7 +518,7 @@ const activityData = [
     id: 1,
     title: '开学第一课',
     date: '2026-07-10',
-    description: '我们的支教活动正式开始啦！小朋友们都很热情，课堂气氛非常活跃。',
+    description: '我们的活动正式开始啦！小朋友们都很热情，大家都很期待接下来的活动。',
     images: [
       { type: 'emoji', src: '📚', alt: '开学第一课' },
       { type: 'emoji', src: '🎒', alt: '新书包' },
@@ -609,7 +609,7 @@ const activityData = [
     id: 8,
     title: '结营仪式',
     date: '2026-07-28',
-    description: '时间过得真快，支教活动就要结束了。虽然很不舍，但我们收获了满满的感动和回忆。',
+    description: '时间过得真快，活动就要结束了。虽然很不舍，但我们收获了满满的感动和回忆。',
     images: [
       { type: 'emoji', src: '😭', alt: '不舍' },
       { type: 'emoji', src: '🎊', alt: '庆祝' },
@@ -665,9 +665,9 @@ const videoData = [
   },
   {
     id: 4,
-    title: '支教vlog - 老师的一天',
+    title: '活动vlog - 我们的一天',
     date: '2026-07-25',
-    description: '跟着镜头看看支教老师们一天的生活是怎样度过的吧~',
+    description: '跟着镜头看看小树苗队一天的生活是怎样度过的吧~',
     thumbnail: '📹',
     thumbColor: '#FFF3E0',
     videoUrl: ''

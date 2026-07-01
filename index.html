@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>小树苗队 - 暑期三下乡教学组</title>
+  <title>小树苗队 - 2026暑期三下乡</title>
   <link rel="stylesheet" href="css/style.css">
   <style>
     .hero {
@@ -392,16 +392,16 @@
       <div class="hero-text fade-in">
         <h1>暑期三下乡<br>小树苗队</h1>
         <p>
-          用知识点亮梦想，用爱心温暖童年。<br>
-          我们是一支充满活力的大学生支教团队，
-          为乡村小朋友带来有趣、有温度的课堂体验。
+          用陪伴点亮童年，用爱心温暖成长。<br>
+          我们是一支充满活力的大学生团队，
+          为乡村小朋友带来丰富多彩的活动体验。
         </p>
         <div class="hero-buttons">
-          <a href="courses.html" class="btn btn-primary">
-            📚 开始学习
+          <a href="gallery.html" class="btn btn-primary">
+            📸 活动风采
           </a>
-          <a href="interactive.html" class="btn btn-secondary">
-            🎮 玩游戏学知识
+          <a href="courses.html" class="btn btn-secondary">
+            📚 活动内容
           </a>
         </div>
       </div>
@@ -420,8 +420,8 @@
 
   <section class="section features">
     <div class="container">
-      <h2 class="section-title fade-in">✨ 我们的特色</h2>
-      <p class="section-subtitle fade-in">丰富多彩的课程，让学习变得有趣又好玩</p>
+      <h2 class="section-title fade-in">✨ 我们的活动</h2>
+      <p class="section-subtitle fade-in">丰富多彩的活动，让每一天都充满快乐和收获</p>
       
       <div class="features-grid">
         <div class="feature-card feature-blue fade-in stagger-1">
@@ -435,14 +435,14 @@
           <p>绘画、手工、音乐...释放想象力，发现美创造美</p>
         </div>
         <div class="feature-card feature-green fade-in stagger-3">
-          <span class="feature-icon">📖</span>
-          <h3>学业辅导</h3>
-          <p>趣味学习方法，让语文数学变得简单又好玩</p>
+          <span class="feature-icon">🤝</span>
+          <h3>团队活动</h3>
+          <p>户外游戏、素质拓展，在合作中收获友谊和快乐</p>
         </div>
         <div class="feature-card feature-pink fade-in stagger-4">
           <span class="feature-icon">💪</span>
-          <h3>素质拓展</h3>
-          <p>团队游戏、安全教育，全面健康快乐成长</p>
+          <h3>成长陪伴</h3>
+          <p>安全教育、心理陪伴，陪伴小朋友们健康快乐成长</p>
         </div>
       </div>
     </div>
@@ -453,18 +453,18 @@
       <div class="stats-grid">
         <div class="fade-in stagger-1">
           <div class="stat-number">8+</div>
-          <div class="stat-label">精彩课程</div>
+          <div class="stat-label">精彩活动</div>
         </div>
         <div class="fade-in stagger-2">
           <div class="stat-number">6</div>
-          <div class="stat-label">优秀教师</div>
+          <div class="stat-label">团队成员</div>
         </div>
         <div class="fade-in stagger-3">
-          <div class="stat-number">100+</div>
+          <div class="stat-number">30</div>
           <div class="stat-label">快乐学生</div>
         </div>
         <div class="fade-in stagger-4">
-          <div class="stat-number">15</div>
+          <div class="stat-number">7</div>
           <div class="stat-label">活动天数</div>
         </div>
       </div>
@@ -473,8 +473,8 @@
 
   <section class="section team">
     <div class="container">
-      <h2 class="section-title fade-in">👨‍🏫 教学团队</h2>
-      <p class="section-subtitle fade-in">认识我们可爱又专业的老师们</p>
+      <h2 class="section-title fade-in">👋 团队成员</h2>
+      <p class="section-subtitle fade-in">认识我们充满活力的小树苗队</p>
       
       <div class="team-grid" id="teamGrid"></div>
     </div>
@@ -488,12 +488,12 @@
       <div class="quick-grid">
         <a href="courses.html" class="quick-card quick-blue fade-in stagger-1">
           <span class="quick-icon">📚</span>
-          <h3>教学资源</h3>
-          <p>丰富的课程等你学习</p>
+          <h3>活动内容</h3>
+          <p>看看我们准备了哪些活动</p>
         </a>
         <a href="interactive.html" class="quick-card quick-green fade-in stagger-2">
           <span class="quick-icon">🎮</span>
-          <h3>互动学习</h3>
+          <h3>互动乐园</h3>
           <p>玩游戏也能学知识</p>
         </a>
         <a href="gallery.html" class="quick-card quick-orange fade-in stagger-3">
@@ -503,8 +503,8 @@
         </a>
         <a href="#teamGrid" class="quick-card quick-purple fade-in stagger-4">
           <span class="quick-icon">👋</span>
-          <h3>认识老师</h3>
-          <p>和老师们打个招呼</p>
+          <h3>认识我们</h3>
+          <p>和小树苗队打个招呼</p>
         </a>
       </div>
     </div>
@@ -520,13 +520,12 @@
       const card = document.createElement('div');
       card.className = `card team-card fade-in stagger-${(index % 4) + 1}`;
       card.innerHTML = `
-        <div class="team-avatar">${member.avatar}</div>
-        <h3>${member.name}</h3>
-        <div class="team-role">${member.role}</div>
-        <p class="team-bio">${member.bio}</p>
-        <div class="team-skills">
-          ${member.skills.map(skill => `<span class="tag tag-blue">${skill}</span>`).join('')}
+        <div class="team-avatar" style="background: ${member.bgColor};">
+          ${member.avatar}
         </div>
+        <h3>${member.name}</h3>
+        <div class="team-role">小树苗队成员</div>
+        <p class="team-bio">用爱心和热情，陪伴小朋友们快乐成长~</p>
       `;
       teamGrid.appendChild(card);
     });
