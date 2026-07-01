@@ -4,7 +4,16 @@ function createNavbar(activePage) {
   navbar.innerHTML = `
     <div class="navbar-inner">
       <a href="index.html" class="logo">
-        <span class="logo-icon">🌟</span>
+        <span class="logo-icon">
+          <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M25 75 Q35 68 45 72 Q50 65 55 72 Q65 68 75 75" stroke="#2D2D2D" stroke-width="4" stroke-linecap="round" fill="none"/>
+            <path d="M50 72 Q50 50 50 42" stroke="#2D2D2D" stroke-width="5" stroke-linecap="round" fill="none"/>
+            <ellipse cx="38" cy="42" rx="16" ry="20" fill="#B8E06E" stroke="#2D2D2D" stroke-width="3.5" transform="rotate(-20 38 42)"/>
+            <ellipse cx="38" cy="38" rx="10" ry="14" fill="#D4EC9A" transform="rotate(-20 38 38)"/>
+            <ellipse cx="62" cy="38" rx="16" ry="22" fill="#A8D85A" stroke="#2D2D2D" stroke-width="3.5" transform="rotate(25 62 38)"/>
+            <ellipse cx="62" cy="34" rx="10" ry="15" fill="#C4E688" transform="rotate(25 62 34)"/>
+          </svg>
+        </span>
         <span>小树苗队</span>
       </a>
       <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
@@ -40,7 +49,17 @@ function createFooter() {
     <div class="container">
       <div class="footer-content">
         <div>
-          <div class="footer-logo">🌟 小树苗队</div>
+          <div class="footer-logo">
+            <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 6px;">
+              <path d="M25 75 Q35 68 45 72 Q50 65 55 72 Q65 68 75 75" stroke="#2D2D2D" stroke-width="4" stroke-linecap="round" fill="none"/>
+              <path d="M50 72 Q50 50 50 42" stroke="#2D2D2D" stroke-width="5" stroke-linecap="round" fill="none"/>
+              <ellipse cx="38" cy="42" rx="16" ry="20" fill="#B8E06E" stroke="#2D2D2D" stroke-width="3.5" transform="rotate(-20 38 42)"/>
+              <ellipse cx="38" cy="38" rx="10" ry="14" fill="#D4EC9A" transform="rotate(-20 38 38)"/>
+              <ellipse cx="62" cy="38" rx="16" ry="22" fill="#A8D85A" stroke="#2D2D2D" stroke-width="3.5" transform="rotate(25 62 38)"/>
+              <ellipse cx="62" cy="34" rx="10" ry="15" fill="#C4E688" transform="rotate(25 62 34)"/>
+            </svg>
+            小树苗队
+          </div>
           <p class="footer-desc">
             我们是一支充满活力的大学生团队，
             致力于为乡村小朋友带来有趣、有温度的活动体验。
